@@ -37,7 +37,8 @@ class SpeedCalculator(QWidget):
             measure = "Процент входящего урона"
             measure_type = "изначального урона"
         final = 100 / (100 + int(self.inputs_line_edit.text())) * 100
-        self.output_label.setText(f"{measure} - {final}% от {measure_type}")
+        if True:
+            self.output_label.setText(f"{measure} - {final}% от {measure_type}")
 
 
 app = QApplication(sys.argv)
