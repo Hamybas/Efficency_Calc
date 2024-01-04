@@ -1,9 +1,10 @@
 from PyQt6.QtWidgets import (QApplication, QLabel, QWidget,
                              QGridLayout, QLineEdit, QPushButton, QComboBox)
 import sys
+import re
 
 
-class SpeedCalculator(QWidget):
+class EffCalculator(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Efficiency Calculator")
@@ -36,12 +37,20 @@ class SpeedCalculator(QWidget):
         if self.combo.currentText() == 'DEF (GBF)':
             measure = "Процент входящего урона"
             measure_type = "изначального урона"
-        final = 100 / (100 + int(self.inputs_line_edit.text())) * 100
-        if True:
-            self.output_label.setText(f"{measure} - {final}% от {measure_type}")
+        user_input = self.inputs_line_edit.text()
+        if len(user_input) > 7:
+            self.output_label.setText("Это слишком много. Проверьте, пожалуйста, число")
+        else:
+            user_input = re.sub("[^0-9]", '', user_input)
+            if user_input == '':
+                self.output_label.setText("Вы не ввели ни одной цифры")
+            else:
+                final = 100 / (100 + int(user_input)) * 100
+                self.output_label.setText(f"{measure} - {final}%"
+                                          f" от {measure_type}")
 
 
 app = QApplication(sys.argv)
-speed_calculator = SpeedCalculator()
+speed_calculator = EffCalculator()
 speed_calculator.show()
 sys.exit(app.exec())
